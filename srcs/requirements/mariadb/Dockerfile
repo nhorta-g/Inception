@@ -2,7 +2,7 @@
 FROM debian:bullseye
 
 # update and upgrade the system and cleans packeges list for optimization
-RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install the required packages
 RUN apt-get install -y mariadb-server
