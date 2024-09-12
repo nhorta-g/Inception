@@ -4,9 +4,7 @@
 FROM debian:bullseye
 
 # update and upgrade the system
-RUN apt-get update && apt-get upgrade -y && \
-# install the required packages
-	apt-get install -y nginx openssl && \
+RUN apt-get update && apt-get upgrade -y &&  apt-get install -y nginx openssl && \
 # clean up apt cache files to minimize the image size
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 
