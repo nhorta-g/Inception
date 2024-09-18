@@ -1,66 +1,64 @@
-version: "3.8"
-
-# the services part
-services:
-#mariadb
-  mariadb:
-    image: mariadb:user
-    container_name: mariadb
-    build: ./mariadb
-    volumes:
-      - mariadb:/var/lib/mysql
-    env_file :
-      - .env
-    networks :
-      - inception
-    restart: always
-#nginx
-  nginx:
-    image: nginx:user
-    container_name: nginx
-    build: ./nginx
-    ports:
-      - "443:443"
-    depends_on:
-      - wordpress
-    volumes:
-      - wordpress:/var/www/wordpress
-    networks:
-      - inception
-    restart: always
-#wordpress
-  wordpress:
-    image: wordpress:user
-    container_name: wordpress
-    build: ./wordpress
-    depends_on:
-      - mariadb
-    volumes:
-      - wordpress:/var/www/wordpress
-    env_file :
-      - .env
-    networks:
-      - inception
-    restart: always
-
-# the volumes part
-volumes:
+#bind mounts
+volumes: #stored on host machine and persist beyond lifecycle of containers
   mariadb:
     name: mariadb
     driver: local
     driver_opts:
       device: /home/data/mariadb
-      o : bind
-      type : none
+      o: bind #share data between host and container, access, modify info form host and container
+      type: none
+
   wordpress:
     name: wordpress
     driver: local
     driver_opts:
       device: /home/data/wordpress
-      o : bind
-      type : none
+      o: bind
+      type: none
 
-# the networks part
+#user defined bridge network by default
+#containers can use their service names to communicate with each other
 networks:
-  inception:
-    name: inception
+  intertwin:
+    name: intertwin
+
+services:
+  mariadb:
+    image: mariadb #docker build
+    container_name: mariadb
+    build: ./requirements/mariadb #build image
+    volumes:
+      - mariadb:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - intertwin #docker compose up
+    restart: always
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - "443:443" #HTTPS (ssl) traffic
+    depends_on:
+      - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
+    volumes:
+      - wordpress:/var/www/wordpress
+    networks:
+      - intertwin
+    restart: always
+
+  wordpress:
+    image: wordpress
+    container_name: wordpress
+    build: ./requirements/wordpress
+    depends_on:
+      - mariadb #wp needs data base
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - .env
+    networks:
+      - intertwin
+    restart: always

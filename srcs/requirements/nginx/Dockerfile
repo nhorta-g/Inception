@@ -9,7 +9,7 @@ RUN apt-get update && apt-get upgrade -y &&  apt-get install -y nginx openssl &&
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # create the ssl directory and set permissions
-RUN mkdir -p /var/www/wordpress /etc/nginx/ssl
+RUN mkdir -p /etc/nginx/ssl /var/www/wordpress && \
 	chown -R www-data:www-data /var/www/wordpress
 
 # generate the ssl certificate
@@ -18,7 +18,7 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt \
 	-subj "/C=PT/ST=Lis/Lis/O=42/OU=42/CN=nhorta-g.fr"
 
 # copy the nginx configuration file
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # define the command to run when the container starts
 CMD ["nginx", "-g", "daemon off;"]

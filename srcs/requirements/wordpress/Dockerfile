@@ -17,7 +17,7 @@ RUN apt-get install --no-install-recommends -y \
 	rm -rf /var/lib/apt/lists/*
 
 # Copy the WordPress configuration script to the root of the container
-COPY wp_conf.sh /wp_conf.sh
+COPY conf/wp_conf.sh /wp_conf.sh
 
 # Set executable permissions for the script
 RUN chmod +x /wp_conf.sh
