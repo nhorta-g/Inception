@@ -1,5 +1,5 @@
-WP_DATA = /home/data/wordpress #define the path to the wordpress data
-DB_DATA = /home/data/mariadb #define the path to the mariadb data
+WP_DATA = /home/nhorta-g/data/wordpress #define the path to the wordpress data
+DB_DATA = /home/nhorta-g/data/mariadb #define the path to the mariadb data
 
 # default target
 all: up
@@ -10,8 +10,8 @@ all: up
 up: build
 	mkdir -p $(WP_DATA)
 	mkdir -p $(DB_DATA)
-	#chmod -R 755 $(WP_DATA)
-	#chmod -R 755 $(DB_DATA)
+	chmod -R 755 $(WP_DATA)
+	chmod -R 755 $(DB_DATA)
 	docker compose -f ./srcs/docker-compose.yml up -d
 
 # stop the containers

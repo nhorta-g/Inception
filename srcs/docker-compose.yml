@@ -4,7 +4,7 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: mariadb
     driver: local
     driver_opts:
-      device: /home/data/mariadb
+      device: /home/nhorta-g/data/mariadb
       o: bind #share data between host and container, access, modify info form host and container
       type: none
 
@@ -12,15 +12,15 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: wordpress
     driver: local
     driver_opts:
-      device: /home/data/wordpress
+      device: /home//nhorta-g/data/wordpress
       o: bind
       type: none
 
 #user defined bridge network by default
 #containers can use their service names to communicate with each other
 networks:
-  intertwin:
-    name: intertwin
+  netNuno:
+    name: netNuno
 
 services:
   mariadb:
@@ -32,7 +32,7 @@ services:
     env_file:
       - .env
     networks:
-      - intertwin #docker compose up
+      - netNuno #docker compose up
     restart: always
 
   nginx:
@@ -46,7 +46,7 @@ services:
     volumes:
       - wordpress:/var/www/wordpress
     networks:
-      - intertwin
+      - netNuno
     restart: always
 
   wordpress:
@@ -60,5 +60,5 @@ services:
     env_file:
       - .env
     networks:
-      - intertwin
+      - netNuno
     restart: always
