@@ -12,7 +12,7 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
     name: wordpress
     driver: local
     driver_opts:
-      device: /home//nhorta-g/data/wordpress
+      device: /home/nhorta-g/data/wordpress
       o: bind
       type: none
 
