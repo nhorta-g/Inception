@@ -14,19 +14,11 @@ up: build
 	chmod -R 755 $(DB_DATA)
 	docker compose -f ./srcs/docker-compose.yml up -d
 
-# stop the containers
-down:
-	docker compose -f ./srcs/docker-compose.yml down
-
-# stop the containers
-stop:
-	docker compose -f ./srcs/docker-compose.yml stop
-
-# start the containers
+# start the containers: it only starts containers that were previously stopped
 start:
 	docker compose -f ./srcs/docker-compose.yml start
 
-# build the containers
+# build the containers: build the Docker images
 build:
 	docker compose -f ./srcs/docker-compose.yml build
 

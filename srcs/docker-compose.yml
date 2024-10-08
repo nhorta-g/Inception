@@ -1,27 +1,3 @@
-#bind mounts
-volumes: #stored on host machine and persist beyond lifecycle of containers
-  mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      device: /home/nhorta-g/data/mariadb
-      o: bind #share data between host and container, access, modify info form host and container
-      type: none
-
-  wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      device: /home/nhorta-g/data/wordpress
-      o: bind
-      type: none
-
-#user defined bridge network by default
-#containers can use their service names to communicate with each other
-networks:
-  netNuno:
-    name: netNuno
-
 services:
   mariadb:
     image: mariadb #docker build
@@ -62,3 +38,27 @@ services:
     networks:
       - netNuno
     restart: always
+
+#bind mounts
+volumes: #stored on host machine and persist beyond lifecycle of containers
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/nhorta-g/data/mariadb
+      o: bind #share data between host and container, access, modify info form host and container
+      type: none
+
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/nhorta-g/data/wordpress
+      o: bind
+      type: none
+
+#user defined bridge network by default
+#containers can use their service names to communicate with each other
+networks:
+  netNuno:
+    name: netNuno

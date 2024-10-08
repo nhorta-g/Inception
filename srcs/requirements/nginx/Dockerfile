@@ -8,7 +8,7 @@ RUN apt-get update && apt-get upgrade -y &&  apt-get install -y nginx openssl &&
 # clean up apt cache files to minimize the image size
 	apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# create the ssl directory and set permissions
+# create the ssl and wordpress directory and set permissions
 RUN mkdir -p /etc/nginx/ssl /var/www/wordpress && \
 	chown -R www-data:www-data /var/www/wordpress
 
