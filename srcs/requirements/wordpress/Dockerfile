@@ -9,7 +9,7 @@ RUN apt-get update && \
 # php7.4-fpm, PHP-FPM (FastCGI Process Manager); php-mysql, enables
 # PHP to communicate with MySQL/MariaDB; mariadb-client, usefull
 # to interect with mariaDB server inside the container
-RUN apt-get install --no-install-recommends -y \
+RUN apt-get install -y \
 	curl \
 	php7.4-fpm \
 	php-mysql \

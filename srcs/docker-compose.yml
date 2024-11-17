@@ -16,7 +16,7 @@ services:
     container_name: nginx
     build: ./requirements/nginx
     ports:
-      - "443:443" #HTTPS (ssl) traffic
+      - "443:443" #Only port 443 is mapped for HTTPS traffic
     depends_on:
       - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
     volumes:
