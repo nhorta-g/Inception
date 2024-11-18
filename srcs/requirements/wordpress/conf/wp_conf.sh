@@ -13,7 +13,7 @@ cd /var/www/wordpress
 # give permission to wordpress directory
 chmod -R 755 /var/www/wordpress/
 # change owner of wordpress directory to www-data
-chown -R www-data:www-data /var/www/wordpress
+chown -R www-data:www-data /var/www/html
 
 #---------------------PING MARIADB TO CHECK-----------------------#
 
@@ -40,6 +40,7 @@ wp core install --url="$DOMAIN_NAME" --title="$WP_TITLE" --admin_user="$WP_ADMIN
 wp user create "$WP_U_NAME" "$WP_U_EMAIL" --user_pass="$WP_U_PASS" \
 	--role="$WP_U_ROLE" --allow-root
 
+wp theme activate twentytwentyfour --allow-root
 #--------------------------PHP CONFIG----------------------------#
 
 # change listen port from unix socket to 9000

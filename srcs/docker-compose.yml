@@ -1,3 +1,5 @@
+#version: "3.8"
+
 services:
   mariadb:
     image: mariadb #docker build
@@ -10,6 +12,11 @@ services:
     networks:
       - netNuno #docker compose up
     restart: always
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "mariadb", "3306"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
 
   nginx:
     image: nginx

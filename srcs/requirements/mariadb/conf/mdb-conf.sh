@@ -11,7 +11,6 @@ configure_mariadb() {
 	# -e flag allows you to execute a SQL statement directly from the command line.
 
 	# Create user if not exists
-
 	mariadb -e "CREATE USER IF NOT EXISTS \`${MYSQL_USER}\`@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 	# @'%': typical SQL syntax for host part of the user (@), wildcard meaning for "any host. ()"
 

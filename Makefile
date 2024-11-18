@@ -9,10 +9,10 @@ all: up
 # create the wordpress and mariadb data directories.
 # start the containers in the background and leaves them running
 up: build
-	mkdir -p $(WP_DATA)
-	mkdir -p $(DB_DATA)
-	chmod -R 755 $(WP_DATA)
-	chmod -R 755 $(DB_DATA)
+	sudo mkdir -p $(WP_DATA)
+	sudo mkdir -p $(DB_DATA)
+	sudo chmod -R 755 $(WP_DATA)
+	sudo chmod -R 755 $(DB_DATA)
 	$(COMPOSE) up -d
 
 # start the containers: it only starts containers that were previously stopped
