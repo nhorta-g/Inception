@@ -1,5 +1,6 @@
 WP_DATA = /home/nhorta-g/data/wordpress #define the path to the wordpress data
 DB_DATA = /home/nhorta-g/data/mariadb #define the path to the mariadb data
+COMPOSE = docker compose -f ./srcs/docker-compose.yml
 
 # default target
 all: up
@@ -12,15 +13,15 @@ up: build
 	sudo mkdir -p $(DB_DATA)
 	sudo chmod -R 755 $(WP_DATA)
 	sudo chmod -R 755 $(DB_DATA)
-	docker compose -f ./srcs/docker-compose.yml up -d
+	$(COMPOSE) up -d
 
 # start the containers: it only starts containers that were previously stopped
 start:
-	docker compose -f ./srcs/docker-compose.yml start
+	$(COMPOSE) start
 
 # build the containers: build the Docker images
 build:
-	docker compose -f ./srcs/docker-compose.yml build
+	$(COMPOSE) build
 
 logs:
 #	clear
@@ -51,13 +52,14 @@ list: ps images volumes networks
 	@echo "**********Docker list**********\n\n"
 
 clean:
-	@docker stop $$(docker ps -qa) || true
-	@docker rm $$(docker ps -qa) || true
-	@docker rmi -f $$(docker images -qa) || true
-	@docker volume rm $$(docker volume ls -q) || true
-	@docker network rm $$(docker network ls -q) || true
+	@docker ps -qa | xargs -r docker stop || true
+	@docker ps -qa | xargs -r docker rm || true
+	@docker images -qa | xargs -r docker rmi -f || true
+	@docker volume ls -q | xargs -r docker volume rm || true
+	@docker network ls -q | grep -v -e 'bridge' -e 'host' -e 'none' | xargs -r docker network rm || true
 	@rm -rf $(WP_DATA) || true
 	@rm -rf $(DB_DATA) || true
+
 
 # clean and start the containers
 re: clean up

@@ -1,3 +1,5 @@
+#version: "3.8"
+
 services:
   mariadb:
     image: mariadb #docker build
@@ -10,13 +12,18 @@ services:
     networks:
       - netNuno #docker compose up
     restart: always
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "mariadb", "3306"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
 
   nginx:
     image: nginx
     container_name: nginx
     build: ./requirements/nginx
     ports:
-      - "443:443" #HTTPS (ssl) traffic
+      - "443:443" #Only port 443 is mapped for HTTPS traffic
     depends_on:
       - wordpress #nginx handles incoming HTTP/HTTPS requests and forwards them to WordPress
     volumes:
