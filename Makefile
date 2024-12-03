@@ -8,10 +8,10 @@ all: up
 # create the wordpress and mariadb data directories.
 # start the containers in the background and leaves them running
 up: build
-	mkdir -p $(WP_DATA)
-	mkdir -p $(DB_DATA)
-	chmod -R 755 $(WP_DATA)
-	chmod -R 755 $(DB_DATA)
+	sudo mkdir -p $(WP_DATA)
+	sudo mkdir -p $(DB_DATA)
+	sudo chmod -R 755 $(WP_DATA)
+	sudo chmod -R 755 $(DB_DATA)
 	docker compose -f ./srcs/docker-compose.yml up -d
 
 # start the containers: it only starts containers that were previously stopped
@@ -22,11 +22,34 @@ start:
 build:
 	docker compose -f ./srcs/docker-compose.yml build
 
-# clean the containers
-# stop all running containers and remove them.
-# remove all images, volumes and networks.
-# remove the wordpress and mariadb data directories.
-# the (|| true) is used to ignore the error if there are no containers running to prevent the make command from stopping.
+logs:
+#	clear
+	@echo "**********Docker logs**********\n"
+	@docker compose -f ./srcs/docker-compose.yml logs
+
+ps:
+#	clear
+	@echo "**********Docker containers**********\n"
+	@docker ps -a
+
+images:
+#	clear
+	@echo "\n**********Docker images**********\n"
+	@docker images
+
+volumes:
+#	clear
+	@echo "\n**********Docker volumes**********\n"
+	@docker volume ls
+
+networks:
+#	clear
+	@echo "\n**********Docker networks**********\n"
+	@docker network ls
+
+list: ps images volumes networks
+	@echo "**********Docker list**********\n\n"
+
 clean:
 	@docker stop $$(docker ps -qa) || true
 	@docker rm $$(docker ps -qa) || true
