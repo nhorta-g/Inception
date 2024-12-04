@@ -1,22 +1,28 @@
 #version: "3.8"
 
+#user defined bridge network by default
+#containers can use their service names to communicate with each other
+networks:
+  netNuno:
+    name: netNuno
+
 services:
   mariadb:
-    image: mariadb #docker build
+    image: mariadb
     container_name: mariadb
-    build: ./requirements/mariadb #build image
+    build: ./requirements/mariadb
     volumes:
       - mariadb:/var/lib/mysql
     env_file:
       - .env
     networks:
-      - netNuno #docker compose up
+      - netNuno
     restart: always
     healthcheck:
       test: ["CMD", "nc", "-zv", "mariadb", "3306"]
       interval: 1s
       timeout: 5s
-      retries: 10
+      retries: 7
 
   nginx:
     image: nginx
@@ -65,8 +71,4 @@ volumes: #stored on host machine and persist beyond lifecycle of containers
       o: bind
       type: none
 
-#user defined bridge network by default
-#containers can use their service names to communicate with each other
-networks:
-  netNuno:
-    name: netNuno
+

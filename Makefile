@@ -13,7 +13,7 @@ up: build
 	sudo mkdir -p $(DB_DATA)
 	sudo chmod -R 755 $(WP_DATA)
 	sudo chmod -R 755 $(DB_DATA)
-	$(COMPOSE) up -d
+	sudo $(COMPOSE) up -d
 
 # start the containers: it only starts containers that were previously stopped
 start:
@@ -23,47 +23,34 @@ start:
 build:
 	$(COMPOSE) build
 
+detailmdblogs:
+	$(COMPOSE) exec mariadb cat /var/lib/mysql/*.err
+
 logs:
-#	clear
-	@echo "**********Docker logs**********\n"
-	@docker compose -f ./srcs/docker-compose.yml logs
+	$(COMPOSE) logs
 
 ps:
-#	clear
 	@echo "**********Docker containers**********\n"
 	@docker ps -a
-
 images:
-#	clear
 	@echo "\n**********Docker images**********\n"
 	@docker images
 
 volumes:
-#	clear
 	@echo "\n**********Docker volumes**********\n"
 	@docker volume ls
 
-networks:
-#	clear
-	@echo "\n**********Docker networks**********\n"
-	@docker network ls
-
-list: ps images volumes networks
-	@echo "**********Docker list**********\n\n"
-
 clean:
-	@docker ps -qa | xargs -r docker stop || true
-	@docker ps -qa | xargs -r docker rm || true
-	@docker images -qa | xargs -r docker rmi -f || true
-	@docker volume ls -q | xargs -r docker volume rm || true
-	@docker network ls -q | grep -v -e 'bridge' -e 'host' -e 'none' | xargs -r docker network rm || true
-	@rm -rf $(WP_DATA) || true
-	@rm -rf $(DB_DATA) || true
+	clear
+	$(COMPOSE) down --rmi all --volumes
+
+fclean: clean
+	@sudo rm -irf /home/nhorta-g/data
 
 
 # clean and start the containers
-re: clean up
+re: fclean up
 
 # prune the containers: execute the clean target and remove all containers, images, volumes and networks from the system.
 prune: clean
-	@docker system prune -a --volumes -f
+	@docker system prune -a --volumes
