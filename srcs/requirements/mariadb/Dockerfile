@@ -2,7 +2,7 @@
 FROM debian:bullseye
 
 # update and upgrade the system and cleans packeges list for optimization
-RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server -y netcat -y \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server -y \
 		&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # copy file with mariaDB script from host to container

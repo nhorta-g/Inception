@@ -13,20 +13,8 @@ cd /var/www/wordpress
 # give permission to wordpress directory
 chmod -R 755 /var/www/wordpress/
 # change owner of wordpress directory to www-data
-chown -R www-data:www-data /var/www/html
+chown -R www-data:www-data /var/www/wordpress
 
-#---------------------PING MARIADB TO CHECK-----------------------#
-
-# Wait for MariaDB to be available
-until nc -zv mariadb 3306; do #nc = netcat (utility to scan network ports) -z = zero-I/O mode
-						#(just checks port, doesnt send or recv); v = verbose; mariadb = our
-						#container to check; 3306 - the default port MB listnes
-	echo "[========WAITING FOR MARIADB TO START...========]"
-	sleep 1
-done
-echo "[========MARIADB IS UP AND RUNNING========]"
-
-#---------------------------WORDPRESS-----------------------------#
 
 # download wordpress core files
 wp core download --allow-root

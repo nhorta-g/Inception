@@ -37,7 +37,8 @@ services:
     container_name: wordpress
     build: ./requirements/wordpress
     depends_on:
-      - mariadb #wp needs data base
+      mariadb:
+          condition: service_healthy
     volumes:
       - wordpress:/var/www/wordpress
     env_file:
