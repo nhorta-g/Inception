@@ -13,9 +13,10 @@ RUN mkdir -p /etc/nginx/ssl /var/www/wordpress && \
 	chown -R www-data:www-data /var/www/wordpress
 
 # generate the ssl certificate
-RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt \
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-out /etc/nginx/ssl/inception.crt \
 	-keyout /etc/nginx/ssl/inception.key \
-	-subj "/C=PT/ST=Lis/Lis/O=42/OU=42/CN=nhorta-g.fr"
+	-subj "/C=PT/ST=Lis/L=Lis/O=42/OU=42/CN=nhorta-g.fr"
 
 # copy the nginx configuration file
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
